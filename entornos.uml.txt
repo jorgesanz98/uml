@@ -1,0 +1,47 @@
+@startuml
+actor cliente
+boundary pedido
+control controladorPedido
+entity entidadPedido
+control controladorProducto
+entity entidadProducto
+activate cliente
+cliente -> pedido : 1:realizarPedido
+activate pedido
+activate controladorPedido
+pedido -> controladorPedido : 1.1:iniciarPedido
+activate controladorProducto
+controladorPedido -> controladorProducto : 1.1.1 :listarProductos
+activate entidadProducto
+controladorProducto -> entidadProducto : 1.1.1.1 :recuperarProductos
+entidadProducto --> controladorProducto : 1.1.1.2 :listarProductos
+controladorProducto --> controladorPedido : 1.1.2 :listarProductos
+deactivate entidadProducto
+controladorPedido -> pedido : 1.1.3 : mostrarProductos
+entidadPedido -> cliente : 1.1.4 : introDireccion
+activate entidadPedido
+cliente --> entidadPedido : 1.1.5 : DireccionIntroducida
+deactivate entidadPedido
+deactivate controladorProducto
+cliente -> pedido : 2:seleccionar producto
+deactivate controladorPedido
+activate controladorProducto
+pedido -> controladorProducto : 2.1 recuperarDatosProducto
+activate entidadProducto
+controladorProducto -> entidadProducto : 2.1.1 : recuperarDatos
+entidadProducto --> controladorProducto : 2.1.2 : datosProducto
+deactivate entidadProducto
+controladorProducto -> pedido : 2.1.3 : mostrarDatosProducto
+cliente -> pedido : 3 : confirmar seleccion
+pedido -> controladorPedido : 3.1 : confirmarPedido
+activate controladorPedido
+controladorPedido -> entidadPedido : 3.1.1 registrarPedido
+activate entidadPedido
+entidadPedido --> controladorPedido : 3.1.2 idPedido
+deactivate entidadPedido
+controladorPedido -> pedido : 3.1.3 : muestraID
+deactivate controladorProducto
+deactivate controladorPedido
+deactivate pedido
+@enduml
+
